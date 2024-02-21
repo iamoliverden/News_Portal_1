@@ -1,0 +1,19 @@
+{% extends 'default.html' %}
+{% load static %}
+{% load censor_filter %}
+
+{% block for_news_page %}
+
+<ul>
+{% for x in app_response %}
+<li>
+    <strong>{{ x.title|censor }}</strong> (<em>{{ x.return_date }} </em>) :  {{ x.preview_20|censor }}
+    <a href = "{{ x.get_absolute_url }}"> Read more </a>
+</li>
+{% endfor %}
+{% block title %}
+{% endblock %}
+</ul>
+
+{% endblock %}
+```
