@@ -9,6 +9,9 @@ class Author(models.Model):
     a_user = models.OneToOneField(User, on_delete=models.CASCADE) # one-to-one relationship with User model
     a_rating = models.IntegerField(default=0) # user rating
 
+    def __str__(self):
+        return self.a_user
+
     def update_rating(self): # method that updates the author rating
         # the total rating of each article
         pr_0 = self.post_set.all().aggregate(post_rating = Sum('rating_post'))
@@ -43,10 +46,14 @@ class Author(models.Model):
 class Category(models.Model):
     name = models.CharField(max_length=128, unique=True) # category name, unique
 
+    def __str__(self):
+        return self.name
+
+
 # Model Post
 class Post(models.Model):
     author = models.ForeignKey(Author, on_delete=models.CASCADE) # one-to-many relationship with Author model
-    post_type = models.CharField(max_length=16, choices=[('A', 'article'), ('N', 'news')], default='article') # field with choice - 'article' or 'news'
+    post_type = models.CharField(max_length=16, choices=[('A', 'article'), ('N', 'news')], default='A') # field with choice - 'article' or 'news'
     created_at = models.DateTimeField(auto_now_add=True) # date and time of creation
     post_category = models.ManyToManyField(Category, through='PostCategory') # many-to-many relationship with Category model
     title = models.CharField(max_length=256) # article/news title
